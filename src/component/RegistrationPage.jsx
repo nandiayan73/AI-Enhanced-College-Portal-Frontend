@@ -14,7 +14,7 @@ function RegistrationPage() {
                 </a>
                 <a href="/Registration/FacultyRegistration" class="list-group-item list-group-item-action ">
                     <div class="d-flex w-100 justify-content-center ">
-                        <h5 class="mb-1">Faculty Registration</h5>
+                        <h5 class="mb-1">Faculty/HOD Registration</h5>
                         {/* <small class="text-body-secondary">3 days ago</small> */}
                     </div>
                     <p class="mb-1 text-center">Some placeholder content in a paragraph.</p>

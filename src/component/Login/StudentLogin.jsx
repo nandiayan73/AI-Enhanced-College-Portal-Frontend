@@ -1,31 +1,47 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function LoginPage() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password) {
       setError('Please fill in all fields');
       return;
     }
 
-    // Here you would normally call your authentication API
-    console.log('Login attempt with:', { email, password });
+    try {
+      const res = await axios.post('http://localhost:3000/user/login', {
+        email,
+        password
+      }, {
+        withCredentials: true // allow cookies (token)
+      });
 
-    // For demo purposes - just show success
-    alert('Login successful (demo)');
-    setError('');
+      const user = res.data.user;
+
+      // Make sure the role is Student
+      if (user.role !== "Student") {
+        return setError("Only students can log in from this page.");
+      }
+
+      alert("Login successful");
+      // ********navigate('/StudentHomePage');
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Try again.");
+    }
   };
 
   return (
-    <div className="container d-flex justify-content-center align-items-center mt-10">
+    <div className="container d-flex justify-content-center align-items-center mt-5">
       <div className="card p-4" style={{ width: '400px' }}>
         <h2 className="text-center mb-4">Student Login</h2>
 
@@ -55,10 +71,8 @@ function LoginPage() {
               required
             />
           </div>
-          <a href="/StudentHomePage"><button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
-          </a>
 
-
+          <button type="submit" className="btn btn-primary w-100 mb-3">Login</button>
 
           <div className="text-center">
             <span className="text-muted">New User? </span>
