@@ -1,0 +1,67 @@
+.top {
+    display: flex;
+    justify-content: center;
+}
+
+.top-left {
+    margin-top: 100px;
+    width: 100%;
+}
+
+.top-right {
+    width: 70vw;
+}
+
+#animaiton-1 {
+    margin-top: 16px;
+    margin-left: 55px;
+}
+
+.btn {
+    margin-top: 10px;
+    margin-left: 8px;
+}
+
+
+/*Login Page*/
+
+.list-group {
+    margin-top: 20px;
+}
+
+.list-group-item {
+    margin-top: 20px;
+}
+
+/*About Page*/
+.about-top {
+    display: flex;
+    justify-content: center;
+}
+
+.about-left {
+    margin-top: 100px;
+    margin-left: -10px;
+    width: 100%;
+}
+
+.about-right {
+    width: 80vw;
+    margin-left: 22px;
+}
+
+#animation-2 {
+    margin-left: 30px;
+    margin-top: 15px;
+
+
+}
+
+.features {
+
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
