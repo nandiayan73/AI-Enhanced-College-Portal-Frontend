@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-
 function StudentRegistration() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -22,6 +21,7 @@ function StudentRegistration() {
     password: '',
     confirmPassword: '',
     session: '',
+    year: '', // manually entered year (1 to 4)
   });
 
   const handleChange = (e) => {
@@ -36,7 +36,7 @@ function StudentRegistration() {
 
     const {
       firstName, lastName, email, password, confirmPassword,
-      department, regNo, rollNo, session
+      department, regNo, rollNo, session, year
     } = formData;
 
     if (password !== confirmPassword) {
@@ -47,9 +47,9 @@ function StudentRegistration() {
       return alert("Please select session.");
     }
 
-    // Split session into session and year values
-    const [sessionStart, sessionEnd] = session.split("-");
-    const year = new Date().getFullYear() - parseInt(sessionStart) + 1;
+    if (!["1", "2", "3", "4"].includes(year)) {
+      return alert("Year must be between 1 and 4.");
+    }
 
     try {
       const res = await axios.post("http://localhost:3000/user/register", {
@@ -61,7 +61,7 @@ function StudentRegistration() {
         regNo,
         rollNo,
         session,
-        year // auto-calculated year from session
+        year: parseInt(year),
       });
 
       alert(res.data.message || "Student registered successfully.");
@@ -129,15 +129,24 @@ function StudentRegistration() {
             <option>CE</option>
           </select>
         </div>
-
-        <div className="col-md-6">
+        <div className="col-md-3">
           <label className="form-label">Session (e.g., 2023-24)</label>
           <select className="form-select" name="session" onChange={handleChange} required>
             <option value="">Select Session</option>
             <option>2024-25</option>
             <option>2025-26</option>
+            <option>2026-27</option>
             <option>2027-28</option>
-            <option>2028-29</option>
+          </select>
+        </div>
+        <div className="col-md-3">
+          <label className="form-label">Year (1 to 4)</label>
+          <select className="form-select" name="year" onChange={handleChange} required>
+            <option value="">Select Year</option>
+            <option value="1">1st Year</option>
+            <option value="2">2nd Year</option>
+            <option value="3">3rd Year</option>
+            <option value="4">4th Year</option>
           </select>
         </div>
 

@@ -2,12 +2,36 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useEffect } from 'react';
 
 function FacultyLogin() {
+  
+  const navigate = useNavigate();
+    useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/user/auth", { withCredentials: true });
+        const user = res.data;
+
+        if (user.__t === "Student") {
+          navigate("/Login/StudentHomePage");
+        } else if (user.__t === "Faculty") {
+          navigate("/Login/FacultyHome");
+        } else if (user.__t === "HOD") {
+          navigate("/Login/HODHome");
+        } else if (user.__t === "Principal") {
+          navigate("/Login/PrincipalHome");
+        }
+      } catch (err) {
+        console.log("User not authenticated yet.");
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,7 +57,7 @@ function FacultyLogin() {
       }
 
       alert('Login successful');
-      navigate('/FacultyHome');
+      navigate('/Login/FacultyHome');
 
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Try again.");

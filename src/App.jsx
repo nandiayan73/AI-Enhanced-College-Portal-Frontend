@@ -18,7 +18,11 @@ import StudentHomePage from './component/StudentSection/StudentHomePage'
 import FacultyHome from './component/FacultySection/FacultyHome'
 import HODHome from './component/FacultySection/HODHome'
 import AdminLogin from './component/Login/AdminLogin'
-
+import PrincipalHome from './component/PrincipalSection/PrincipalHome'
+import AcademicYearDashboard from './component/Courses/Dashboard'
+import AcademicYearSubjects from "./component/Courses/AcademicYear"
+import SubjectDetails from './component/Courses/Subject'
+import TrainModel from './component/Courses/Model'
 
 function App() {
 
@@ -44,9 +48,14 @@ function App() {
           <Route path='/Login/FacultyLogin' element={<FacultyLogin />} />
           <Route path='/Login/AdminLogin' element={<AdminLogin />} />
           <Route path='/Suggestion/QuestionSuggestion' element={<QuestionSuggestion/>}/>
-          <Route path='/Login/StudentSection/StudentHomePage' element={<StudentHomePage />} />        {/* <Route path='/Suggestion/QuestionSuggestion' element={<QuestionSuggestion/>}/> */}
-          <Route path='/Login/FacultySection/FacultyHome' element={<FacultyHome />} />
-          <Route path='/Login/FacultySection/HODHome' element={<HODHome />} />
+          <Route path='/Login/StudentHomePage' element={<StudentHomePage />} />        {/* <Route path='/Suggestion/QuestionSuggestion' element={<QuestionSuggestion/>}/> */}
+          <Route path='/Login/PrincipalHome' element={<PrincipalHome />} />
+          <Route path='/Login/FacultyHome' element={<FacultyHome />} />
+          <Route path='/Login/HODHome' element={<HODHome />} />
+          <Route path='/courses/dashboard' element={<AcademicYearDashboard></AcademicYearDashboard>} />
+          <Route path="/academicyear/:id/:session" element={<AcademicYearSubjects />} />
+          <Route path="/:subjectname/:subjectid" element={<SubjectDetails />} />
+          <Route path="/:subjectname/:subjectid/modeltrain" element={<TrainModel />} />
           
          
 
