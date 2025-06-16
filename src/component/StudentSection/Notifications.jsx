@@ -8,12 +8,12 @@ const Notifications = ({ notifications }) => {
         {notifications.map((notification) => (
           <div key={notification._id} className="border-l-4 border-blue-500 pl-4 py-2">
             <div className="flex justify-between items-start">
-              <h5 className="font-medium text-gray-800">{notification.title}</h5>
+              <h5 className="font-medium text-gray-800">{notification.text}</h5>
               <span className="text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded">
                 {/* {notification.} */}
               </span>
             </div>
-            <p className="text-gray-600 mt-1">{notification.caption}</p>
+            <p className="text-gray-600 mt-1">{notification.subject}</p>
            <p className="text-sm text-gray-400 mt-2">
             {new Date(notification.date).toISOString().split("T")[0]}
           </p>

@@ -53,6 +53,23 @@ function PrincipalHome() {
     fetchPrincipalData();
   }, [navigate]);
 
+  const sendAttendanceWarning = async () => {
+    try {
+      setLoading(true);
+      const res = await axios.post(
+        "http://localhost:3000/principal/notify-low-attendance",
+        { id: principalData._id },
+        { withCredentials: true }
+      );
+      toast.success("Attendance warning sent to students");
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to send attendance warning");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const postDetails = async (pic) => {
     if (!pic) {
       toast.warning("Please Select an Image");
@@ -364,6 +381,17 @@ function PrincipalHome() {
                 ))
               )}
             </div>
+               <button
+                  className="btn btn-warning w-100 mt-3"
+                  onClick={sendAttendanceWarning}
+                  disabled={loading}
+                >
+                  {loading ? "Sending..." : "Send Attendance Warning"}
+              </button>
+
+              <a href="/login/PrincipalHome/manage-HODs"><button className="btn btn-warning w-100 mt-3">Manage HODs</button></a>
+              <a href="/login/PrincipalHome/manage-Faculties"><button className="btn btn-warning w-100 mt-3">Manage Faculties</button></a>
+              <a href="/login/PrincipalHome/manage-Students"><button className="btn btn-warning w-100 mt-3">Manage Students</button></a>
           </div>
         </div>
       </div>

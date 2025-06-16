@@ -23,6 +23,10 @@ import AcademicYearDashboard from './component/Courses/Dashboard'
 import AcademicYearSubjects from "./component/Courses/AcademicYear"
 import SubjectDetails from './component/Courses/Subject'
 import TrainModel from './component/Courses/Model'
+import Chatbot from './component/ChatBot/Bot'
+import ManageHODs from './component/PrincipalSection/ManageHOD'
+import ManageFaculties from './component/PrincipalSection/ManageFaculty'
+import ManageStudents from './component/PrincipalSection/ManageStudent'
 
 function App() {
 
@@ -56,6 +60,10 @@ function App() {
           <Route path="/academicyear/:id/:session" element={<AcademicYearSubjects />} />
           <Route path="/:subjectname/:subjectid" element={<SubjectDetails />} />
           <Route path="/:subjectname/:subjectid/modeltrain" element={<TrainModel />} />
+          <Route path="/chat-college-bot/" element={<Chatbot></Chatbot>} />
+          <Route path="//login/PrincipalHome/manage-HODs" element={<ManageHODs></ManageHODs>} />
+          <Route path="//login/PrincipalHome/manage-Faculties" element={<ManageFaculties></ManageFaculties>} />
+          <Route path="//login/PrincipalHome/manage-Students" element={<ManageStudents></ManageStudents>} />
           
          
 

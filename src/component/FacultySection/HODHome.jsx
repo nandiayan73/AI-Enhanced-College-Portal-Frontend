@@ -216,12 +216,16 @@ function HodDashboard() {
 
         {/* Action Buttons */}
         <div className="p-6 md:p-10 bg-gray-100 border-t border-gray-200 flex flex-wrap justify-center gap-4">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-transform hover:-translate-y-1">
-            Manage Courses
-          </button>
-          <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-transform hover:-translate-y-1">
-            View Faculty List
-          </button>
+          <a href="/courses/dashboard">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-transform hover:-translate-y-1">
+              Manage Courses
+            </button>
+          </a>
+          {/* <a href="">
+            <button className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-full shadow-lg transition-transform hover:-translate-y-1">
+              View Faculty List
+            </button>
+          </a> */}
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { toast } from "react-toastify";
 import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./FacultyHome.css"; // Create this CSS file for custom styles
 
 function FacultyHome() {
   const navigate = useNavigate();
@@ -42,7 +43,6 @@ function FacultyHome() {
   }, []);
 
   const postDetails = async (pic) => {
-    console.log("ehhe");
     setLoading(true);
     if (!pic) {
       toast.warning("Please Select an Image");
@@ -69,7 +69,7 @@ function FacultyHome() {
 
         await axios.post(
           "http://localhost:3000/faculty/updatephoto",
-          { photo: info.url.toString() ,id:facultyData._id},
+          { photo: info.url.toString(), id: facultyData._id },
           { withCredentials: true }
         );
 
@@ -113,35 +113,15 @@ function FacultyHome() {
       <div className="card shadow-lg p-4 mb-5 text-center">
         <h2 className="mb-3">Welcome, {facultyData.name}</h2>
 
-        <div className="position-relative d-inline-block mb-3">
-          <center>
-            <img
-              src={facultyData.photo}
-              alt="Faculty"
-              className="rounded-circle"
-              style={{
-                width: "140px",
-                height: "140px",
-                objectFit: "cover",
-                border: "3px solid #007bff",
-              }}
-            />
-          </center>
-
-        <label
-          htmlFor="upload-photo"
-          className="position-absolute top-50 start-50"
-          style={{
-            transform: "translate(-50%, -0%)", // Adjust this Y value to move down
-            backgroundColor: "rgba(0,0,0,0.6)",
-            borderRadius: "50%",
-            padding: "10px",
-            cursor: "pointer",
-          }}
-        >
-        <i className="fas fa-camera text-white"></i>
-      </label>
-
+        <div className="profile-image-container mb-3">
+          <img
+            src={facultyData.photo}
+            alt="Faculty"
+            className="rounded-circle profile-image"
+          />
+          <label htmlFor="upload-photo" className="camera-overlay">
+            <i className="fas fa-camera text-white"></i>
+          </label>
           <input
             type="file"
             id="upload-photo"
@@ -152,32 +132,15 @@ function FacultyHome() {
           />
         </div>
 
-        <p><strong>Email:</strong> {facultyData.email}</p>
-        <p><strong>Department:</strong> {facultyData.department}</p>
-        <p><strong>Designation:</strong> {facultyData.designation}</p>
-      </div>
-
-      <div className="card shadow p-4">
-        <h4 className="mb-3">Subjects Assigned</h4>
-        {subjects.length === 0 ? (
-          <p className="text-muted">No subjects assigned yet.</p>
-        ) : (
-          <ul className="list-group">
-            {subjects.map((subject) => (
-              <li
-                className="list-group-item d-flex justify-content-between align-items-center"
-                key={subject._id}
-              >
-                <span>
-                  <strong>{subject.subjectName}</strong> ({subject.subjectCode})
-                </span>
-                <span className="badge bg-secondary">
-                  Credits: {subject.credits}
-                </span>
-              </li>
-            ))}
-          </ul>
-        )}
+        <p>
+          <strong>Email:</strong> {facultyData.email}
+        </p>
+        <p>
+          <strong>Department:</strong> {facultyData.department}
+        </p>
+        <p>
+          <strong>Designation:</strong> {facultyData.designation}
+        </p>
       </div>
     </div>
   );

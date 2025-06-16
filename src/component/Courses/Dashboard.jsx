@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const formattedSession = "2025-26"; // used in query
-
 const AcademicYearDashboard = () => {
   const [academicYears, setAcademicYears] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -11,6 +9,11 @@ const AcademicYearDashboard = () => {
   const [sessionInput, setSessionInput] = useState("");
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+  const [formattedSession, setFormattedSession] = useState("");
+  const [showUpdateSessionModal, setShowUpdateSessionModal] = useState(false);
+  const [newSessionInput, setNewSessionInput] = useState("");
+  const [updateSessionError, setUpdateSessionError] = useState("");
+  const [updateSessionMsg, setUpdateSessionMsg] = useState("");
   const navigate = useNavigate();
 
   // Check auth on mount
@@ -29,8 +32,24 @@ const AcademicYearDashboard = () => {
     checkAuth();
   }, []);
 
-  // Fetch academic years
+  // Fetch session from college singleton
   useEffect(() => {
+    const fetchSession = async () => {
+      try {
+        const res = await axios.get("http://localhost:3000/college/session");
+        setFormattedSession(res.data.session);
+        console.log(res.data.session);
+      } catch (err) {
+        console.error("Failed to fetch session:", err);
+      }
+    };
+    fetchSession();
+  }, []);
+
+  // Fetch academic years only after session is available
+  useEffect(() => {
+    if (!formattedSession) return;
+
     const fetchYears = async () => {
       try {
         const res = await axios.get("http://localhost:3000/allacademyyear", {
@@ -42,7 +61,7 @@ const AcademicYearDashboard = () => {
       }
     };
     fetchYears();
-  }, []);
+  }, [formattedSession]);
 
   const handleYearClick = (year) => {
     navigate(`/academicyear/${year._id}/${year.session}`);
@@ -67,6 +86,28 @@ const AcademicYearDashboard = () => {
       } else {
         setError("Something went wrong");
       }
+    }
+  };
+
+  const handleUpdateSession = async () => {
+    try {
+      const res = await axios.post("http://localhost:3000/college/updatesession", {
+        session: newSessionInput,
+      });
+      setFormattedSession(newSessionInput);
+      setUpdateSessionMsg("Session updated successfully.");
+      setUpdateSessionError("");
+      setTimeout(() => {
+        setShowUpdateSessionModal(false);
+        setUpdateSessionMsg("");
+        setNewSessionInput("");
+      }, 1500);
+    } catch (err) {
+      console.error(err);
+      setUpdateSessionError(
+        err.response?.data?.message || "Failed to update session."
+      );
+      setUpdateSessionMsg("");
     }
   };
 
@@ -109,13 +150,25 @@ const AcademicYearDashboard = () => {
         ))}
       </div>
 
-      {academicYears.length === 0 && (
+      {academicYears.length === 0 && formattedSession && (
         <div className="text-center mt-12 text-gray-500 text-lg">
           No academic years found for session {formattedSession}.
         </div>
       )}
 
-      {/* Create Modal */}
+      {/* Update Session Button */}
+      {user?.__t === "Principal" && (
+        <div className="mt-10 text-center">
+          <button
+            onClick={() => setShowUpdateSessionModal(true)}
+            className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 py-3 rounded-lg shadow-md transition"
+          >
+            Complete the Current Session
+          </button>
+        </div>
+      )}
+
+      {/* Create Academic Year Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-96">
@@ -151,6 +204,50 @@ const AcademicYearDashboard = () => {
                 className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
               >
                 Create
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Update Session Modal */}
+      {showUpdateSessionModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-96">
+            <h3 className="text-xl font-bold mb-4 text-emerald-800">Update College Session</h3>
+
+            {updateSessionMsg && (
+              <div className="text-green-600 text-sm mb-2">{updateSessionMsg}</div>
+            )}
+            {updateSessionError && (
+              <div className="text-red-600 text-sm mb-2">{updateSessionError}</div>
+            )}
+
+            <input
+              type="text"
+              placeholder="New Session (e.g., 2025-26)"
+              className="w-full mb-3 p-2 border rounded-md"
+              value={newSessionInput}
+              onChange={(e) => setNewSessionInput(e.target.value)}
+            />
+
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => {
+                  setShowUpdateSessionModal(false);
+                  setUpdateSessionError("");
+                  setUpdateSessionMsg("");
+                  setNewSessionInput("");
+                }}
+                className="text-gray-700 px-4 py-2 rounded-md hover:bg-gray-100"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleUpdateSession}
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md"
+              >
+                Update
               </button>
             </div>
           </div>

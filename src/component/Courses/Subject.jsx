@@ -213,7 +213,8 @@ const SubjectDetails = () => {
                 Post
               </button>
               <button
-                onClick={() => navigate(`/${subjectname}/${subjectid}/modeltrain`)} 
+                onClick={() => navigate(`/${subjectname}/${subjectid}/modeltrain`)}
+                style={{display:isStudent?"":"none"}} 
                 className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg shadow"
               >
                 Train Model on Syllabus
@@ -256,7 +257,7 @@ const SubjectDetails = () => {
               >
                 <div className="flex items-center justify-between">
                   <h3 className="font-semibold text-indigo-700">
-                    {user.name || "User"}
+                    {post.role || "User"}
                   </h3>
                   <span className="text-xs text-gray-400">
                     {new Date(post.createdAt).toLocaleString()}

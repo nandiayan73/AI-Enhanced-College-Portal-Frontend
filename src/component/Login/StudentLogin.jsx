@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useEffect } from 'react';
+import { GiConsoleController } from 'react-icons/gi';
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -52,10 +53,10 @@ function LoginPage() {
       const user = res.data.user;
 
       // Make sure the role is Student
+      console.log(user);
       if (user.role !== "Student") {
         return setError("Only students can log in from this page.");
       }
-
       alert("Login successful");
       navigate('/login/StudentHomePage');
     } catch (err) {

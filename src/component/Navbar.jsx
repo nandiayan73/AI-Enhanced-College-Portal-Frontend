@@ -6,13 +6,22 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
-
+  const [dashboardRoute,setDashboard]=useState();
   // Check authentication on mount
   useEffect(() => {
     const checkAuth = async () => {
       try {
         const res = await axios.get("http://localhost:3000/user/auth", { withCredentials: true });
         setUser(res.data);
+        const role=res.data.__t;
+        if(role=='Student')
+          setDashboard("/login/StudentHomePage");
+        else if(role=='HOD')
+          setDashboard("/login/HODHome")
+        else if(role=='Faculty')
+          setDashboard("/login/FacultyHome")
+        else if(role=='Principal')
+          setDashboard("/login/PrincipalHome")
       } catch (err) {
         setUser(null);
       }
@@ -41,12 +50,32 @@ function Navbar() {
               AI Enhanced College Portal
             </a>
             <div className="hidden md:flex items-center space-x-4">
-              <a href="/" className="text-blue-700 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none" }}>
+              
+
+              {user ? (
+                 <></>
+              ) : (
+                <>
+                <a href="/" className="text-blue-700 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none" }}>
                 Home
               </a>
+                </>
+              )}  
+             
+            
               <a href="/About" className="text-gray-800 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none" }}>
                 About
               </a>
+              <a href="/chat-college-bot" className="text-gray-800 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none" }}>
+                ChatBot
+              </a>
+               {user ? (
+                  <a href={dashboardRoute} className="text-blue-700 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none"}}>
+                    Dashboard
+                  </a>
+              ) : (
+                <></>
+              )}
               {user && (
                 <a href="/courses/dashboard" className="text-gray-800 hover:text-blue-50 px-3 py-2 rounded-md text-l font-medium" style={{ textDecoration: "none" }}>
                   Course
@@ -74,6 +103,7 @@ function Navbar() {
                   Register
                 </a>
               )}
+              
             </div>
 
             {/* Mobile menu button */}
